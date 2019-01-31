@@ -1,4 +1,4 @@
-package com.nts.pjt3.controller;
+package fakerlulu.lolstatus.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 
 @Controller
-public class ReservationController {
+public class LolStatusController {
 
 
 	@GetMapping(path = "/mainpage")

@@ -1,4 +1,4 @@
-package com.nts.pjt3.config;
+package fakerlulu.lolstatus.config;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.TransactionManagementConfigure
 
 @Configuration
 @EnableTransactionManagement
-@MapperScan("com.nts.pjt3.mapper")
+@MapperScan("fakerlulu.lolstatus.mapper")
 public class DBConfig implements TransactionManagementConfigurer {
 
 	private String driverClassName;
@@ -65,7 +65,7 @@ public class DBConfig implements TransactionManagementConfigurer {
 		ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
 		sqlSessionFactory.setMapperLocations(resolver.getResources("/mapper/**/*_SQL.xml"));
 		sqlSessionFactory.setDataSource(dataSource());
-		sqlSessionFactory.setTypeAliasesPackage("com.nts.pjt3.dto");
+		sqlSessionFactory.setTypeAliasesPackage("fakerlulu.lolstatus.dto");
 
 		SqlSessionFactory sessionFactory = sqlSessionFactory.getObject();
 		sessionFactory.getConfiguration().setMapUnderscoreToCamelCase(true);
@@ -73,8 +73,7 @@ public class DBConfig implements TransactionManagementConfigurer {
 	}
 
 	@Bean
-	public SqlSessionTemplate sqlSessionTemplate(SqlSessionFactory sqlSessionFactory)
-		throws Exception {
+	public SqlSessionTemplate sqlSessionTemplate(SqlSessionFactory sqlSessionFactory) throws Exception {
 		return new SqlSessionTemplate(sqlSessionFactory);
 	}
 
