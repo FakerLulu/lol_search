@@ -1,0 +1,25 @@
+@charset "UTF-8";
+.group_visual .visual_img .item{
+    position: absolute;
+    transform: translateX(100%);
+    width: 100%;
+        height: 414px;
+    will-change : transform, opacity;
+    opacity : 0;
+    transition: transform 1s;
+}
+.visual_img .item:nth-child(1){ 
+	opacity : 1;
+    transform: translateX(0%);
+}
+.visual_img .item:last-child{ 
+    opacity : 1;
+    transform: translateX(-100%);
+}
+.visual_img{ 
+    will-change : transform, opacity;
+    transition: transform 1s;
+}
+.detail_location{
+    border-top: 1px solid #e2e5e8;
+}

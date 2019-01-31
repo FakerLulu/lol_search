@@ -1,0 +1,17 @@
+.event .section_visual .group_visual .container_visual .visual_img .item{
+    position: absolute;
+    transform: translateX(100%);
+    width: 100%;
+    will-change : transform, opacity;
+    transition: transform 1s;
+}
+.event .section_visual .group_visual .container_visual .visual_img .item:nth-child(1){ 
+    transform: translateX(0%);
+}
+
+.event .section_event_tab .event_tab_lst::-webkit-scrollbar { 
+    display: none; 
+}
+.event .section_event_tab .event_tab_lst .item .anchor{
+    margin-right: 10px;
+}
