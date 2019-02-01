@@ -20,7 +20,7 @@ function summonerSearch(){
 					console.log(xhttp.response);
 					let container = document.getElementsByClassName('smnInfo')[0];
 					let matchList = document.getElementsByClassName('match-list')[0];
-					JSON.parse(xhttp.response);
+					let summonerData = JSON.parse(xhttp.response);
                     container.innerHTML= "소환사 : "+decodeURI(summonerData.name)+"<br>"+
                     						"레벨 : "+summonerData.summonerLevel+"<br>";
                     let addMatches="";
