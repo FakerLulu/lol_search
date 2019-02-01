@@ -6,4 +6,6 @@ public interface MatchService {
 
 	Map<String, Object> getAllMatchInfo(String accountId, int endIndex);
 
+	Map<String, Object> getMatchDetail(String matchId);
+
 }

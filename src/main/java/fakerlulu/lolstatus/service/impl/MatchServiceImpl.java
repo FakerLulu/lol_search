@@ -20,4 +20,12 @@ public class MatchServiceImpl implements MatchService {
 		String apiAddress = "https://kr.api.riotgames.com/lol/match/v4/matchlists/by-account/";
 		return apiConnecter.GetApiResponse(accountId, apiAddress, option);
 	}
+
+	@Override
+	public Map<String, Object> getMatchDetail(String matchId) {
+		ApiConnectService apiConnecter = new ApiConnectServiceImpl();
+		String option = "";
+		String apiAddress = "https://kr.api.riotgames.com/lol/match/v4/matches/";
+		return apiConnecter.GetApiResponse(matchId, apiAddress, option);
+	}
 }

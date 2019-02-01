@@ -18,11 +18,10 @@ public class ApiConnectServiceImpl implements ApiConnectService {
 	public Map<String, Object> GetApiResponse(String information, String apiAddress, String option) {
 		try {
 			StringBuffer res = new StringBuffer();
-			String apiKey = "RGAPI-4e968514-b819-4644-81d6-ee89f1729203";// api 키";
+			String apiKey = "RGAPI-a831cad0-beb3-4a8b-88a4-33fe607dd1a7";// api 키";
 			String text = URLEncoder.encode(information, "UTF-8");
 			String apiURL = apiAddress + text + "?api_key=" + apiKey + option;
 			URL url = new URL(apiURL);
-			System.out.println(apiURL);
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.setRequestMethod("GET");
 			con.setRequestProperty("api_key", apiKey);
@@ -76,7 +75,7 @@ public class ApiConnectServiceImpl implements ApiConnectService {
 		Map<String, Object> map = new HashMap<String, Object>();
 		int num = 0;
 		for (int i = 0; i < jsonArr.length(); i++) {
-			map.put(key + " " + num++, ConvertJSONToMap((JSONObject) jsonArr.get(i)));
+			map.put("" + num++, ConvertJSONToMap((JSONObject) jsonArr.get(i)));
 		}
 		return map;
 	}
