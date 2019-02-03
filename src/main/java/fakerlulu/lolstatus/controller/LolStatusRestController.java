@@ -23,10 +23,9 @@ public class LolStatusRestController {// api이름자체가 컨트롤러에서 �
 	@GetMapping(path = "/summonerMatches/")
 	public Map<String, Object> getSummonerMatches(@RequestParam(name = "summonerName") String sname,
 			@RequestParam(name = "count", defaultValue = "1") int matchCount) {
-		Map<String, Object> summonerObj = summonerInfo.getPromotionList(sname);
+		Map<String, Object> summonerObj = summonerInfo.getSummoner(sname);
 		Map<String, Object> matchesObj = matchInfoSearcher.getAllMatchInfo((String) summonerObj.get("accountId"),
 				matchCount);
-		// summonerObj.replace("name", sname);
 		summonerObj.put("matches", matchesObj.get("matches"));
 		return summonerObj;
 	}

@@ -1,65 +1,120 @@
+window.onload=function(){
+	let submitButton = document.getElementById('submit');
+	let championsLoader = getChampionName();
+	let championData;
+	championsLoader.then((champsData)=>{
+		championData = champsData;
+		submitButton.addEventListener("click",summonerSearch);
+	});
 
-// api 호출 예제 => https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/%ED%8C%9D%ED%8C%9D%EA%B0%A4%EB%9F%AD%EC%8B%9C%ED%8C%9D?api_key=RGAPI-d39bcc21-f5ec-4dc0-9f84-f8c5434636ea
-let submitButton = document.getElementById('submit');
-
-submitButton.addEventListener("click",summonerSearch);
-
-
-
-function summonerSearch(){ 
-	let summonerName = document.getElementById('summonerId').value.replace(/\s/gi, '');
-	let count = document.getElementById('matchCount').value;
-	
-    let address = 'http://localhost:8080/lolStatus/api/summonerMatches/?summonerName='+encodeURI(summonerName)+"&count="+count;
-    let xhttp = new XMLHttpRequest;
-		xhttp.open('GET', address);
-		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-		xhttp.onreadystatechange = () => {
-			if (xhttp.readyState === 4) {
-				if (xhttp.status === 200) {
-					console.log(xhttp.response);
-					let container = document.getElementsByClassName('smnInfo')[0];
-					let matchList = document.getElementsByClassName('match-list')[0];
-					let summonerData = JSON.parse(xhttp.response);
-                    container.innerHTML= "소환사 : "+decodeURI(summonerData.name)+"<br>"+
-                    						"레벨 : "+summonerData.summonerLevel+"<br>";
-                    let addMatches="";
-                    for(matchNum in summonerData.matches){
-                    	addMatches+= "<li class=\"list-group-item\">"+"<h5>번호 "+matchNum+"</h5> 사용 챔피언 : "+summonerData.matches[matchNum].champion+"</li>"
-                    }
-                    matchList.innerHTML = addMatches;
-				} else {
-					// location.href = location.origin + "/" +
-					// location.pathname.split("/")[1] + "/error";
+	function summonerSearch(){ 
+		let summonerName = document.getElementById('summonerId').value.replace(/\s/gi, '');
+		let count = document.getElementById('matchCount').value;
+		
+	    let address = 'http://localhost:8080/lolStatus/api/summonerMatches/?summonerName='+encodeURI(summonerName)+"&count="+count;
+	    let xhttp = new XMLHttpRequest;
+			xhttp.open('GET', address);
+			xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			xhttp.onreadystatechange = () => {
+				if (xhttp.readyState === 4) {
+					if (xhttp.status === 200) {
+						let container = document.getElementsByClassName('smnInfo')[0];
+						let matchList = document.getElementsByClassName('match-list')[0];
+						let summonerData = JSON.parse(xhttp.response);
+	                    container.innerHTML= "소환사 : "+decodeURI(summonerData.name)+"<br>"+
+	                    						"레벨 : "+summonerData.summonerLevel+"<br>";
+	                    let addMatches="";
+	                    for(matchNum in summonerData.matches){
+	                    	let date = new Date(summonerData.matches[matchNum].timestamp);
+	                    	addMatches+= "<li class=\"list-group-item\">"+"<h5>번호 "+matchNum+"</h5> "+
+	                    	"게임 시작 시간 : "+date.getFullYear()+"."+(date.getMonth()+1)+"."+date.getDate()
+	                    	+" "+date.getHours()+":"+date.getMinutes()+"<br>"+
+	                    	" 사용 챔피언 : "+findChamps(summonerData.matches[matchNum].champion)+"<br>"+
+	                    	"게임 종류 : 시즌"+IsWhatSeason(summonerData.matches[matchNum].season)+", "+IsWhatTypeGame(summonerData.matches[matchNum].queue)+
+	                    	"</li>"
+	                    	
+	                    }
+	                    matchList.innerHTML = addMatches;
+					} else {
+						// location.href = location.origin + "/" +
+						// location.pathname.split("/")[1] + "/error";
+					}
 				}
+			};
+	
+			xhttp.send();
+			xhttp.onreadystatechange();
+	
+	}
+	
+	function getChampionName(){ 
+		//http://ddragon.leagueoflegends.com/cdn/[[롤 클라이언트 버전]].1/data/en_US/champion.json에서 갱신
+		return new Promise((resolve) => {
+			let address = 'http://localhost:8080/lolStatus/json/champion.json';
+		    let xhttp = new XMLHttpRequest;
+				xhttp.open('GET', address);
+				xhttp.setRequestHeader("Content-type", "application/json");
+				xhttp.onreadystatechange = () => {
+					if (xhttp.readyState === 4) {
+						if (xhttp.status === 200) {
+							return resolve(JSON.parse(xhttp.response).data);
+						} else {
+							// location.href = location.origin + "/" +
+							// location.pathname.split("/")[1] + "/error";
+						}
+					}
+				};
+	
+				xhttp.send();
+				xhttp.onreadystatechange();
+		});
+	    
+	
+	}
+	
+	function findChamps(number){
+		const champsNo =number.toString();
+		for(name in championData){
+			if(championData[name].key===champsNo){
+				return name;
 			}
-		};
-
-		xhttp.send();
-		xhttp.onreadystatechange();
+		}
+		
+	}
+	
+	function IsWhatTypeGame(queueNo){
+		// 주소 : https://developer.riotgames.com/game-constants.html
+		switch(queueNo){
+		case 900 : return "소환사의 협곡, URF모드";break;
+		case 450 : return "칼바람나락, 무작위 총력전";break;
+		case 400 : return "소환사의 협곡, 5 vs 5 교차선택";break;
+		case 420 : return "소환사의 협곡, 솔로 랭크";break;
+		case 430 : return "소환사의 협곡, 5 vs 5 비공개 픽";break;
+		case 440 : return "소환사의 협곡, 5 vs 5 자유랭크";break;
+		case 830 : return "소환사의 협곡, 입문봇";break;
+		case 840 : return "소환사의 협곡, 초급봇";break;
+		case 850 : return "소환사의 협곡, 중급봇";break;
+				
+		}	
+	}
+	
+	function IsWhatSeason(seosonNo){
+		// 주소 : https://developer.riotgames.com/game-constants.html
+		switch(seosonNo){
+		case 0 : return "프리시즌 3";break;
+		case 1 : return "시즌 3";break;
+		case 2 : return "프리시즌 4";break;
+		case 3 : return "시즌 4";break;
+		case 4 : return "프리시즌 5";break;
+		case 5 : return "시즌 5";break;
+		case 6 : return "프리시즌 6";break;
+		case 7 : return "시즌 6";break;
+		case 8 : return "프리시즌 7";break;
+		case 9 : return "시즌 7";break;
+		case 10 : return "프리시즌 8";break;
+		case 11 : return "시즌 8";break;
+				
+		}	
+	}
 
 }
-
-/*function getChampionName(name){ 
-
-    let address = 'http://ddragon.leagueoflegends.com/cdn/6.24.1/data/en_US/champion.json';
-    let xhttp = new XMLHttpRequest;
-		xhttp.open('GET', address);
-		xhttp.setRequestHeader("Content-type", "application/json");
-		xhttp.onreadystatechange = () => {
-			if (xhttp.readyState === 4) {
-				if (xhttp.status === 200) {
-					const chmpions = JSON.parse(xhttp.response).data;
-					let men = chmpions.filter(function (chmpions) { return chmpions.key == 56 });
-					console.log(men[0].name);
-				} else {
-					// location.href = location.origin + "/" +
-					// location.pathname.split("/")[1] + "/error";
-				}
-			}
-		};
-
-		xhttp.send();
-		xhttp.onreadystatechange();
-
-}*/

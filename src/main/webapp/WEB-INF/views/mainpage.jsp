@@ -17,7 +17,7 @@
 		소환사명 : 
 		<input type="text" id="summonerId"></input><br>
 		검색할 최근 경기 수 :
-		<input type="number" id="matchCount" max = "10" min = "1" value ="1"></input><br>
+		<input type="number" id="matchCount" max = "10" min = "1" value ="5"></input><br>
 		<input type="button" id="submit" value = "검색"></input>
 	    </form>
      	<div class="smnInfo">

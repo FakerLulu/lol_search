@@ -11,7 +11,7 @@ import fakerlulu.lolstatus.service.SummonerService;
 public class SummonerServiceImpl implements SummonerService {
 
 	@Override
-	public Map<String, Object> getPromotionList(String sname) {
+	public Map<String, Object> getSummoner(String sname) {
 		ApiConnectService apiConnecter = new ApiConnectServiceImpl();
 		String option = "";
 		String apiAddress = "https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/";

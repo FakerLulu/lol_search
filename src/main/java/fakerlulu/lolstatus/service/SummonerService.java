@@ -4,6 +4,6 @@ import java.util.Map;
 
 public interface SummonerService {
 
-	Map<String, Object> getPromotionList(String sname);
+	Map<String, Object> getSummoner(String sname);
 
 }
