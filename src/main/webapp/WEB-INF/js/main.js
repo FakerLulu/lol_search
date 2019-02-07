@@ -21,16 +21,23 @@ window.onload=function(){
 						let container = document.getElementsByClassName('smnInfo')[0];
 						let matchList = document.getElementsByClassName('match-list')[0];
 						let summonerData = JSON.parse(xhttp.response);
-	                    container.innerHTML= "소환사 : "+decodeURI(summonerData.name)+"<br>"+
+	                    container.innerHTML= "<img src=\'http://ddragon.leagueoflegends.com/cdn/9.3.1/img/profileicon/"+summonerData.profileIconId+".png'+\' alt=\'\' class=\'img-thumbnail\'>"
+	                    						+"소환사 : "+decodeURI(summonerData.name)+"<br>"+
 	                    						"레벨 : "+summonerData.summonerLevel+"<br>";
 	                    let addMatches="";
 	                    for(matchNum in summonerData.matches){
-	                    	let date = new Date(summonerData.matches[matchNum].timestamp);
-	                    	addMatches+= "<li class=\"list-group-item\">"+"<h5>번호 "+matchNum+"</h5> "+
-	                    	"게임 시작 시간 : "+date.getFullYear()+"."+(date.getMonth()+1)+"."+date.getDate()
+	                    	let thisGame = summonerData.matches[matchNum];
+	                    	let date = new Date(thisGame.gameCreation+(1000*thisGame.gameDuration));
+	                    	let smnPlayerId = getSummonerPlayerId(decodeURI(summonerData.name),thisGame.participantIdentities);
+	                    	let playerTeam = getSummonerTeam(smnPlayerId,thisGame.participants);
+	                    	
+	                    	
+	                    	addMatches+= "<li class=\"list-group-item\">"+"<h5>번호 "+matchNum+"    "+
+	                    	thisGame.teams[playerTeam/100].win+"</h5>"+
+	                    	"게임 시간 : "+date.getFullYear()+"."+(date.getMonth()+1)+"."+date.getDate()
 	                    	+" "+date.getHours()+":"+date.getMinutes()+"<br>"+
-	                    	" 사용 챔피언 : "+findChamps(summonerData.matches[matchNum].champion)+"<br>"+
-	                    	"게임 종류 : 시즌"+IsWhatSeason(summonerData.matches[matchNum].season)+", "+IsWhatTypeGame(summonerData.matches[matchNum].queue)+
+	                    	"사용 챔피언 : "+findChamps(thisGame.champion)+"<br>"+
+	                    	"게임 종류 : 시즌"+IsWhatSeason(thisGame.seasonId)+", "+IsWhatTypeGame(thisGame.queueId)+
 	                    	"</li>"
 	                    	
 	                    }
@@ -71,6 +78,19 @@ window.onload=function(){
 	    
 	
 	}
+	
+	function getSummonerPlayerId(name, participantInfo){
+		for(player in participantInfo){
+			if(participantInfo[player].player.summonerName === name){
+				return player;
+			}
+		}		
+	}
+	
+	function getSummonerTeam(id, participants){
+		return participants[id].teamId;
+	}
+	
 	
 	function findChamps(number){
 		const champsNo =number.toString();
