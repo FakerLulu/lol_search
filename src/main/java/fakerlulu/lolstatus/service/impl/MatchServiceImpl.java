@@ -18,7 +18,16 @@ public class MatchServiceImpl implements MatchService {
 			option += "&endIndex=" + endIndex;
 		}
 		String apiAddress = "https://kr.api.riotgames.com/lol/match/v4/matchlists/by-account/";
-		return apiConnecter.GetApiResponse(accountId, apiAddress, option);
+		Map<String, Object> matchesObj = apiConnecter.GetApiResponse(accountId, apiAddress, option);
+		Map<String, Object> match = (Map<String, Object>) matchesObj.get("matches");
+		for (String id : match.keySet()) {
+			String matchId = ((Map<String, Object>) match.get(id)).get("gameId").toString();
+			String useChampion = ((Map<String, Object>) match.get(id)).get("champion").toString();
+			match.replace(id, getMatchDetail(matchId));
+			((Map<String, Object>) match.get(id)).put("champion", useChampion);
+		}
+		matchesObj.replace("matches", match);
+		return matchesObj;
 	}
 
 	@Override
