@@ -15,10 +15,11 @@ import org.json.JSONObject;
 import fakerlulu.lolstatus.service.ApiConnectService;
 
 public class ApiConnectServiceImpl implements ApiConnectService {
+	@Override
 	public Map<String, Object> GetApiResponse(String information, String apiAddress, String option) {
 		try {
 			StringBuffer res = new StringBuffer();
-			String apiKey = "RGAPI-e3191d47-c80e-4692-bd8d-69e6b2791165";// api 키";
+			String apiKey = "RGAPI-4fe0a3f3-7f6c-4e7f-a628-0b3d5682bc32";// api 키";
 			String text = URLEncoder.encode(information, "UTF-8");
 			String apiURL = apiAddress + text + "?api_key=" + apiKey + option;
 			URL url = new URL(apiURL);
