@@ -19,7 +19,7 @@ public class ApiConnectServiceImpl implements ApiConnectService {
 	public Map<String, Object> GetApiResponse(String information, String apiAddress, String option) {
 		try {
 			StringBuffer res = new StringBuffer();
-			String apiKey = "RGAPI-4fe0a3f3-7f6c-4e7f-a628-0b3d5682bc32";// api 키";
+			String apiKey = "RGAPI-59064f3b-1bb3-4da9-9aaf-5401453b235e";// api 키";
 			String text = URLEncoder.encode(information, "UTF-8");
 			String apiURL = apiAddress + text + "?api_key=" + apiKey + option;
 			URL url = new URL(apiURL);

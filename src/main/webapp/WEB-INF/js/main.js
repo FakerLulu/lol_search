@@ -11,7 +11,7 @@ window.onload=function(){
 		let summonerName = document.getElementById('summonerId').value.replace(/\s/gi, '');
 		let count = document.getElementById('matchCount').value;
 		
-	    let address = 'http://localhost:8080/lolStatus/api/summonerMatches/?summonerName='+encodeURI(summonerName)+"&count="+count;
+	    let address = './api/summonerMatches/?summonerName='+encodeURI(summonerName)+"&count="+count;
 	    let xhttp = new XMLHttpRequest;
 			xhttp.open('GET', address);
 			xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -21,7 +21,7 @@ window.onload=function(){
 						let container = document.getElementsByClassName('smnInfo')[0];
 						let matchList = document.getElementsByClassName('match-list')[0];
 						let summonerData = JSON.parse(xhttp.response);
-	                    container.innerHTML= "<img src=\'http://ddragon.leagueoflegends.com/cdn/9.3.1/img/profileicon/"+summonerData.profileIconId+".png'+\' alt=\'\' class=\'img-thumbnail\'>"
+	                    container.innerHTML= "<img src=\'http://ddragon.leagueoflegends.com/cdn/10.4.1/img/profileicon/"+summonerData.profileIconId+".png'+\' alt=\'\' class=\'img-thumbnail\'>"
 	                    						+"소환사 : "+decodeURI(summonerData.name)+"<br>"+
 	                    						"레벨 : "+summonerData.summonerLevel+"<br>";
 	                    let addMatches="";
@@ -57,7 +57,7 @@ window.onload=function(){
 	function getChampionName(){ 
 		//http://ddragon.leagueoflegends.com/cdn/[[롤 클라이언트 버전]].1/data/en_US/champion.json에서 갱신
 		return new Promise((resolve) => {
-			let address = 'http://localhost:8080/lolStatus/json/champion.json';
+			let address = './json/champion.json';
 		    let xhttp = new XMLHttpRequest;
 				xhttp.open('GET', address);
 				xhttp.setRequestHeader("Content-type", "application/json");
@@ -96,7 +96,7 @@ window.onload=function(){
 		const champsNo =number.toString();
 		for(name in championData){
 			if(championData[name].key===champsNo){
-				return name;
+				return championData[name].name;
 			}
 		}
 		
@@ -133,8 +133,9 @@ window.onload=function(){
 		case 9 : return "시즌 7";break;
 		case 10 : return "프리시즌 8";break;
 		case 11 : return "시즌 8";break;
-				
-		}	
+		case 12 : return "프리시즌 9";break;
+		case 13 : return "시즌 9";break;
+		}
 	}
 
 }
